@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@use-gesture/react": "^10.2.27",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "knex": "^2.5.1",

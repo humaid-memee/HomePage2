@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.3",
     "@use-gesture/react": "^10.2.27",
     "cors": "^2.8.5",
     "express": "^4.17.2",

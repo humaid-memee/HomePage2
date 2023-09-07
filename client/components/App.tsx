@@ -1,83 +1,107 @@
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 // import { useSpring, animated } from '@react-spring/web'
+// import { useDrag } from '@use-gesture/react'
+// import TestDiv from './TestDiv'
+
+import { useSpring, animated } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
 
 function App() {
-  const [keyboard, setKeyboard] = useState({ x: 300, y: 500 })
-  const bindKeyboard = useDrag((params) => {
-    params.event.preventDefault()
-    setKeyboard({
-      x: params.offset[0],
-      y: params.offset[1],
-    })
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }))
+
+  // Set the drag hook and define component movement based on gesture data
+  const bind = useDrag(({ down, movement: [mx, my] }) => {
+    api.start({ x: mx, y: my, immediate: down })
   })
 
-  const [mouse, setMouse] = useState({ x: 315, y: 535 })
-  const bindMouse = useDrag((params) => {
-    params.event.preventDefault()
-    setMouse({
-      x: params.offset[0],
-      y: params.offset[1],
-    })
-  })
-
-  const [pencils, setPencils] = useState({ x: 880, y: 425 })
-  const bindPencils = useDrag((params) => {
-    params.event.preventDefault()
-    setPencils({
-      x: params.offset[0],
-      y: params.offset[1],
-    })
-  })
-
-  return (
-    <div className="stationery">
-      <div
-        {...bindKeyboard()}
-        style={{
-          position: 'relative',
-          width: '15rem',
-          height: 'auto',
-          top: keyboard.y,
-          left: keyboard.x,
-          zIndex: 2,
-        }}
-      >
-        <div className="test-div"></div>
-      </div>
-
-      <div
-        {...bindMouse()}
-        style={{
-          position: 'relative',
-          width: '2rem',
-          height: 'auto',
-          top: mouse.y,
-          left: mouse.x,
-          zIndex: 2,
-        }}
-      >
-        <div className="test-div"></div>
-      </div>
-
-      <div
-        {...bindPencils()}
-        style={{
-          position: 'relative',
-          width: '4rem',
-          height: 'auto',
-          top: pencils.y,
-          left: pencils.x,
-          zIndex: 3,
-        }}
-      >
-        <div className="test-div"></div>
-      </div>
-    </div>
-  )
+  // Bind it to a component
+  return <animated.div {...bind()} className="test-div" style={{ x, y }} />
 }
 
-export default App
+// function App() {
+//   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }))
+
+//   // Set the drag hook and define component movement based on gesture data
+//   const bind = useDrag(({ down, movement: [mx, my] }) => {
+//     api.start({ x: down ? mx : 0, y: down ? my : 0, immediate: down })
+//   })
+//   return <TestDiv {...bind()} style={{ x, y }} />
+// }
+
+// function App() {
+//   const [keyboard, setKeyboard] = useState({ x: 300, y: 500 })
+//   const bindKeyboard = useDrag((params) => {
+//     params.event.preventDefault()
+//     setKeyboard({
+//       x: params.offset[0],
+//       y: params.offset[1],
+//     })
+//   })
+
+//   const [mouse, setMouse] = useState({ x: 315, y: 535 })
+//   const bindMouse = useDrag((params) => {
+//     params.event.preventDefault()
+//     setMouse({
+//       x: params.offset[0],
+//       y: params.offset[1],
+//     })
+//   })
+
+//   const [pencils, setPencils] = useState({ x: 880, y: 425 })
+//   const bindPencils = useDrag((params) => {
+//     params.event.preventDefault()
+//     setPencils({
+//       x: params.offset[0],
+//       y: params.offset[1],
+//     })
+//   })
+
+//   return (
+//     <div className="stationery">
+//       <div
+//         {...bindKeyboard()}
+//         style={{
+//           position: 'relative',
+//           width: '15rem',
+//           height: 'auto',
+//           top: keyboard.y,
+//           left: keyboard.x,
+//           zIndex: 2,
+//         }}
+//       >
+//         <div className="test-div"></div>
+//       </div>
+
+//       <div
+//         {...bindMouse()}
+//         style={{
+//           position: 'relative',
+//           width: '2rem',
+//           height: 'auto',
+//           top: mouse.y,
+//           left: mouse.x,
+//           zIndex: 2,
+//         }}
+//       >
+//         <div className="test-div"></div>
+//       </div>
+
+//       <div
+//         {...bindPencils()}
+//         style={{
+//           position: 'relative',
+//           width: '4rem',
+//           height: 'auto',
+//           top: pencils.y,
+//           left: pencils.x,
+//           zIndex: 3,
+//         }}
+//       >
+//         <div className="test-div"></div>
+//       </div>
+//     </div>
+//   )
+// }
 
 // import React from 'react'
 // import { useDrag } from 'react-dnd'
@@ -115,4 +139,4 @@ export default App
 //   )
 // }
 
-// export default App
+export default App

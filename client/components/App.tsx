@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import Draggable from 'react-draggable'
+import React, { ReactEventHandler, useState } from 'react'
+import Draggable, { DraggableEvent } from 'react-draggable'
 
 function App() {
   const [activeDrags, setActiveDrags] = useState(0)
@@ -9,7 +9,10 @@ function App() {
     y: 200,
   })
 
-  const handleDrag = (e, ui) => {
+  const handleDrag = (
+    e: DraggableEvent,
+    ui: { deltaX: number; deltaY: number }
+  ) => {
     const { x, y } = deltaPosition
     setDeltaPosition({ x: x + ui.deltaX, y: y + ui.deltaY })
   }
@@ -22,7 +25,14 @@ function App() {
     setActiveDrags(activeDrags - 1)
   }
 
-  const onDrop = (e) => {
+  const onDrop = (e: {
+    target: {
+      classList: {
+        contains: (arg0: string) => any
+        remove: (arg0: string) => void
+      }
+    }
+  }) => {
     setActiveDrags(activeDrags - 1)
     if (e.target.classList.contains('drop-target')) {
       alert('Dropped!')
@@ -30,13 +40,17 @@ function App() {
     }
   }
 
-  const onDropAreaMouseEnter = (e) => {
+  const onDropAreaMouseEnter = (e: {
+    target: { classList: { add: (arg0: string) => void } }
+  }) => {
     if (activeDrags) {
       e.target.classList.add('hovered')
     }
   }
 
-  const onDropAreaMouseLeave = (e) => {
+  const onDropAreaMouseLeave = (e: {
+    target: { classList: { remove: (arg0: string) => void } }
+  }) => {
     e.target.classList.remove('hovered')
   }
 

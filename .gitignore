@@ -4,3 +4,4 @@ npm-debug.log
 bundle.*
 *.sqlite3
 .env
+server/db/dev.sqlite3

@@ -1,5 +1,6 @@
 import React, { ReactEventHandler, useState } from 'react'
 import Draggable, { DraggableEvent } from 'react-draggable'
+import { saveCoord } from '../api/api'
 
 function App() {
   const [activeDrags, setActiveDrags] = useState(0)
@@ -55,9 +56,14 @@ function App() {
   }
 
   return (
-    <Draggable onStart={onStart} onDrag={handleDrag} onStop={onStop}>
-      <div className="test-div">Drag me</div>
-    </Draggable>
+    <>
+      <Draggable onStart={onStart} onDrag={handleDrag} onStop={onStop}>
+        <div className="test-div">Drag me</div>
+      </Draggable>
+      <button onClick={() => saveCoord({ id: 2, x: 400, y: 300 })}>
+        Save Position
+      </button>
+    </>
   )
 }
 

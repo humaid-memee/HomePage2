@@ -7,6 +7,6 @@ export function saveLocationById(
   return db('locations').insert({ id: coord.id, x: coord.x, y: coord.y })
 }
 
-export function getLocationById(db = connection, id: number) {
+export function getLocationById(id: number, db = connection) {
   return db('locations').select('id', id)
 }

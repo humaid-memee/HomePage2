@@ -4,7 +4,10 @@ export function saveLocationById(
   coord: { id: number; x: number; y: number },
   db = connection
 ) {
-  return db('locations').insert({ id: coord.id, x: coord.x, y: coord.y })
+  return db('locations')
+    .insert({ id: coord.id, x: coord.x, y: coord.y })
+    .onConflict('id')
+    .merge()
 }
 
 export function getLocationById(id: number, db = connection) {

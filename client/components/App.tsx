@@ -1,14 +1,27 @@
-import React, { ReactEventHandler, useState } from 'react'
+import React, { ReactEventHandler, useEffect, useState } from 'react'
 import Draggable, { DraggableEvent } from 'react-draggable'
-import { saveCoord } from '../api/api'
+import { getCoordsById, saveCoord } from '../api/api'
+import { useQuery } from '@tanstack/react-query'
 
 function App() {
+  function useCoordsById(id: number) {
+    return useQuery(['coords'], () => getCoordsById(id))
+  }
+
+  const { data: initialCoord, isLoading } = useCoordsById(1)
+
   const [activeDrags, setActiveDrags] = useState(0)
-  const [deltaPosition, setDeltaPosition] = useState({ x: 0, y: 0 })
-  const [controlledPosition, setControlledPosition] = useState({
-    x: -400,
-    y: 200,
+  const [deltaPosition, setDeltaPosition] = useState({
+    x: 0,
+    y: 0,
   })
+
+  console.log(deltaPosition)
+
+  // const [controlledPosition, setControlledPosition] = useState({
+  //   x: -400,
+  //   y: 200,
+  // })
 
   const handleDrag = (
     e: DraggableEvent,
@@ -55,15 +68,33 @@ function App() {
     e.target.classList.remove('hovered')
   }
 
+  function handleGetPosition() {
+    setDeltaPosition({
+      x: initialCoord.x,
+      y: initialCoord.y,
+    })
+  }
   return (
-    <>
-      <Draggable onStart={onStart} onDrag={handleDrag} onStop={onStop}>
-        <div className="test-div">Drag me</div>
-      </Draggable>
-      <button onClick={() => saveCoord({ id: 2, x: 400, y: 300 })}>
-        Save Position
-      </button>
-    </>
+    !isLoading && (
+      <>
+        <Draggable
+          onStart={onStart}
+          onDrag={handleDrag}
+          onStop={onStop}
+          defaultPosition={{ x: initialCoord.x, y: initialCoord.y }}
+        >
+          <div className="test-div">Drag me</div>
+        </Draggable>
+        <button
+          onClick={() =>
+            saveCoord({ id: 1, x: deltaPosition.x, y: deltaPosition.y })
+          }
+        >
+          Save Position
+        </button>
+        <button onClick={handleGetPosition}>Get Position</button>
+      </>
+    )
   )
 }
 

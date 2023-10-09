@@ -68,11 +68,16 @@ function App() {
     e.target.classList.remove('hovered')
   }
 
-  function handleGetPosition() {
-    setDeltaPosition({
-      x: initialCoord.x,
-      y: initialCoord.y,
-    })
+  function handleSavePosition() {
+    const div = document.querySelector('.test-div')
+    if (div) {
+      const rect = div.getBoundingClientRect()
+      const newPosition = {
+        x: rect.left + window.scrollX,
+        y: rect.top + window.scrollY,
+      }
+      saveCoord({ id: 1, x: newPosition.x, y: newPosition.y })
+    }
   }
   return (
     !isLoading && (
@@ -85,14 +90,7 @@ function App() {
         >
           <div className="test-div">Drag me</div>
         </Draggable>
-        <button
-          onClick={() =>
-            saveCoord({ id: 1, x: deltaPosition.x, y: deltaPosition.y })
-          }
-        >
-          Save Position
-        </button>
-        <button onClick={handleGetPosition}>Get Position</button>
+        <button onClick={handleSavePosition}>Save Position</button>
       </>
     )
   )
